@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geodist", "Geodist\Geodist.csproj", "{DF78228B-6B45-4497-B178-EB9D79679DC5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geodist.UnitTests", "Geodist.UnitTests\Geodist.UnitTests.csproj", "{CC0DA1B5-8B5F-4804-9522-AB2E2D6492A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{DF78228B-6B45-4497-B178-EB9D79679DC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF78228B-6B45-4497-B178-EB9D79679DC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF78228B-6B45-4497-B178-EB9D79679DC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC0DA1B5-8B5F-4804-9522-AB2E2D6492A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC0DA1B5-8B5F-4804-9522-AB2E2D6492A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC0DA1B5-8B5F-4804-9522-AB2E2D6492A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC0DA1B5-8B5F-4804-9522-AB2E2D6492A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
