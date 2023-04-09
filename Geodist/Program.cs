@@ -8,6 +8,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddProblemDetails();
 
 builder.Services.AddSingleton<IGeographicalDistanceCalculator, CosineLawDistanceCalculator>();
 builder.Services.AddSingleton<IValidator<DistanceRequest>, DistanceRequestValidator>();
@@ -19,6 +20,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseExceptionHandler();
 
 app.MapPost("/distance", DistanceEndpoint.ComputeDistance)
     .WithOpenApi();
