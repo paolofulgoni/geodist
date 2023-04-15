@@ -3,13 +3,11 @@ using Geodist.Web.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Net.Http.Headers;
-using System.ComponentModel;
 using System.Net;
 using System.Net.Http.Json;
 
 namespace Geodist.IntegrationTests;
 
-[Category("Integration")]
 public class DistanceEndpointTests : IClassFixture<WebApplicationFactory<Program>>
 {
     private readonly HttpClient _httpClient;
