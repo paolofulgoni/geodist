@@ -4,26 +4,34 @@ using Geodist.Web;
 using Geodist.Web.Models;
 using Geodist.Web.Validators;
 
-WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+namespace Geodist;
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddProblemDetails();
-
-builder.Services.AddSingleton<IValidator<DistanceRequest>, DistanceRequestValidator>();
-builder.Services.AddSingleton<IGeographicalDistanceCalculatorFactory, GeographicalDistanceCalculatorFactory>();
-
-WebApplication app = builder.Build();
-
-if (app.Environment.IsDevelopment())
+public class Program
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    public static void Main(string[] args)
+    {
+        WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+        builder.Services.AddProblemDetails();
+
+        builder.Services.AddSingleton<IValidator<DistanceRequest>, DistanceRequestValidator>();
+        builder.Services.AddSingleton<IGeographicalDistanceCalculatorFactory, GeographicalDistanceCalculatorFactory>();
+
+        WebApplication app = builder.Build();
+
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+
+        app.UseExceptionHandler();
+
+        app.MapPost("/distance", DistanceEndpoint.ComputeDistance)
+            .WithOpenApi();
+
+        app.Run();
+    }
 }
-
-app.UseExceptionHandler();
-
-app.MapPost("/distance", DistanceEndpoint.ComputeDistance)
-    .WithOpenApi();
-
-app.Run();
