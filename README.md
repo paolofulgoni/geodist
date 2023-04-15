@@ -62,3 +62,17 @@ The project contains some unit and integration tests. You can run them with the 
 ```shell
 dotnet test
 ```
+
+## 🌎 Localisation
+
+Based on the request locale, a different measuring unit is used (i.e. kilometers or miles).
+
+The locale is determined by the default .NET 7 strategies (see [docs](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/localization/select-language-culture?view=aspnetcore-7.0)).
+This includes the `Accept-Language` header, which is used in tests.
+
+## ➕Add other distance computation methods 
+
+Different approaches exists to calculate the distance.
+For example ignoring the sphericity of the earth and applying Pythagoras can be a method by approximation or considering the earth as ellipsoid is another method.
+
+The code uses the strategy pattern as is open to extension, by adding a new `IGeographicalDistanceCalculator` implementation and adding it to `GeographicalDistanceCalculatorFactory`.
