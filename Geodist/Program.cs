@@ -10,8 +10,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddProblemDetails();
 
-builder.Services.AddSingleton<IGeographicalDistanceCalculator, CosineLawDistanceCalculator>();
 builder.Services.AddSingleton<IValidator<DistanceRequest>, DistanceRequestValidator>();
+builder.Services.AddSingleton<IGeographicalDistanceCalculatorFactory, GeographicalDistanceCalculatorFactory>();
 
 WebApplication app = builder.Build();
 

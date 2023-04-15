@@ -11,13 +11,16 @@ public static class DistanceEndpoint
     public static Results<Ok<DistanceResponse>, ValidationProblem> ComputeDistance(
         [FromBody] DistanceRequest request,
         [FromServices] IValidator<DistanceRequest> requestValidator,
-        [FromServices] IGeographicalDistanceCalculator distanceCalculator)
+        [FromServices] IGeographicalDistanceCalculatorFactory distanceCalculatorFactory)
     {
         var validationResult = requestValidator.Validate(request);
-        if (!validationResult.IsValid) {
+        if (!validationResult.IsValid)
+        {
             return TypedResults.ValidationProblem(validationResult.ToDictionary());
         }
-        
+
+        var distanceCalculator = distanceCalculatorFactory.Create(GeographicalDistanceMethod.CosineLaw);
+
         double distance = distanceCalculator.Distance(
             request.PointA.Latitude,
             request.PointA.Longitude,
