@@ -2,28 +2,43 @@ using Geodist.Domain;
 using Geodist.Web;
 using Geodist.Web.Models;
 using Geodist.Web.Validators;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Localization;
 
 namespace Geodist.UnitTests.Web;
 
 public class DistanceEndpointTests
 {
-    [Fact]
-    public void ComputeDistance_WhenValidParameters_ReturnsOkResult()
+    [Theory]
+    [InlineData(53.3409518, -6.2678073, 42.3514956, -71.0611723, "en-IE", 4809.4, "km")]
+    [InlineData(53.3409518, -6.2678073, 42.3514956, -71.0611723, "en-US", 2988.4, "mi")]
+    public void ComputeDistance_WhenValidParameters_ReturnsOkResultWithCorrectLocale(
+        double pointALatitude,
+        double pointALongitude,
+        double pointBLatitude,
+        double pointBLongitude,
+        string locale,
+        double expectedDistance,
+        string expectedUnit)
     {
         // arrange
         var request = new DistanceRequest(
-            new Coordinates(0, 0),
-            new Coordinates(0, 0));
+            new Coordinates(pointALatitude, pointALongitude),
+            new Coordinates(pointBLatitude, pointBLongitude));
         var validator = new DistanceRequestValidator();
         var distanceCalculatorFactory = new GeographicalDistanceCalculatorFactory();
+        var context = new DefaultHttpContext();
+        context.Features.Set<IRequestCultureFeature>(new RequestCultureFeature(new RequestCulture(locale), null));
 
         // act
-        var response = DistanceEndpoint.ComputeDistance(request, validator, distanceCalculatorFactory);
+        var response = DistanceEndpoint.ComputeDistance(request, validator, distanceCalculatorFactory, context);
 
         // assert
         response.Result.Should().BeOfType<Ok<DistanceResponse>>();
-        response.Result.As<Ok<DistanceResponse>>().Value!.Distance.Should().Be(0.0);
+        response.Result.As<Ok<DistanceResponse>>().Value!.Distance.Should()
+            .BeApproximately(expectedDistance, expectedDistance * 0.0001);
+        response.Result.As<Ok<DistanceResponse>>().Value!.Unit.Should().Be(expectedUnit);
     }
 
     [Theory]
@@ -47,9 +62,10 @@ public class DistanceEndpointTests
             new Coordinates(pointBLatitude, pointBLongitude));
         var validator = new DistanceRequestValidator();
         var distanceCalculatorFactory = new GeographicalDistanceCalculatorFactory();
+        var context = new DefaultHttpContext();
 
         // act
-        var response = DistanceEndpoint.ComputeDistance(request, validator, distanceCalculatorFactory);
+        var response = DistanceEndpoint.ComputeDistance(request, validator, distanceCalculatorFactory, context);
 
         // assert
         response.Result.Should().BeOfType<ValidationProblem>();

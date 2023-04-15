@@ -2,6 +2,7 @@ using FluentAssertions;
 using Geodist.Web.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Net.Http.Headers;
 using System.ComponentModel;
 using System.Net;
 using System.Net.Http.Json;
@@ -16,6 +17,7 @@ public class DistanceEndpointTests : IClassFixture<WebApplicationFactory<Program
     public DistanceEndpointTests(WebApplicationFactory<Program> webApplicationFactory)
     {
         _httpClient = webApplicationFactory.CreateClient();
+        _httpClient.DefaultRequestHeaders.Add(HeaderNames.AcceptLanguage, "en-IE");
     }
     
     [Theory]
@@ -61,5 +63,9 @@ public class DistanceEndpointTests : IClassFixture<WebApplicationFactory<Program
 
         // assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var distanceResponse = await response.Content.ReadFromJsonAsync<DistanceResponse>();
+        distanceResponse!.Distance.Should().Be(0.0);
+        distanceResponse.Unit.Should().Be("km");
     }
 }

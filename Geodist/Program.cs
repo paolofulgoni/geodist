@@ -15,6 +15,7 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddProblemDetails();
+        builder.Services.AddLocalization();
 
         builder.Services.AddSingleton<IValidator<DistanceRequest>, DistanceRequestValidator>();
         builder.Services.AddSingleton<IGeographicalDistanceCalculatorFactory, GeographicalDistanceCalculatorFactory>();
@@ -28,6 +29,7 @@ public class Program
         }
 
         app.UseExceptionHandler();
+        app.UseRequestLocalization();
 
         app.MapPost("/distance", DistanceEndpoint.ComputeDistance)
             .WithOpenApi();
