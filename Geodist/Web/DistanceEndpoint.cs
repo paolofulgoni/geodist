@@ -13,6 +13,9 @@ public static class DistanceEndpoint
     private const string kilometersUnit = "km";
     private const string MilesUnit = "mi";
 
+    /// <summary>
+    /// Computes the geographical distance between two points A and B
+    /// </summary>
     public static Results<Ok<DistanceResponse>, ValidationProblem> ComputeDistance(
         [FromBody] DistanceRequest request,
         IValidator<DistanceRequest> requestValidator,
